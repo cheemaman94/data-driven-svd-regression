@@ -1,17 +1,17 @@
 """
 z_score_flu.py
 
-Goal:
-- Convert flu hospitalizations to z-scores per state.
+This script converts flu hospitalization numbers into z-scores, which tell us how unusual
+the current flu activity is compared to what's typical for each state.
 
 Definition:
     zflu = (hospitalizations - state_mean) / state_std
 
-Inputs:
+Input file needed:
 - analysis_data/target-hospital-admissions.csv
 - data/from_state_to_fip_and_pop.csv (for population merge consistency)
 
-Output:
+Output file created:
 - analysis_data/hosps_pop_zscore.csv
 """
 
@@ -19,30 +19,28 @@ import os
 import sys
 import pandas as pd
 
+#File paths for Input & Output
 ADM_PATH = os.path.join("analysis_data", "formatted_flu.csv")
 OUT_PATH = os.path.join("analysis_data", "hosps_pop_zscore.csv")
 
 
 def main():
-    # -----------------------------
-    # Load data
-    # -----------------------------
+    
+    # Loading data
     if not os.path.exists(ADM_PATH):
         raise FileNotFoundError(f"Missing input file: {ADM_PATH}")
 
     df = pd.read_csv(ADM_PATH)
     df["date"] = pd.to_datetime(df["date"])
 
-    # Keep valid rows
+    # Keeping valid rows only
     df = df[df["location"].notna()]
     df = df[df["value"].notna()].copy()
 
-    # Ensure location is string (important for state codes)
+    # Ensuring location is of string datatype
     df["location"] = df["location"].astype(str)
 
-    # -----------------------------
-    # Compute z-score per state
-    # -----------------------------
+    # Computing the z-score per state
     stats = (
         df.groupby("location")["value"]
         .agg(["mean", "std"])
@@ -52,14 +50,12 @@ def main():
 
     df = df.merge(stats, on="location", how="left")
 
-    # Avoid division by zero
+    #Remove any states where the standard deviation is zero 
+    #Avoiding division by zero
     df = df[df["state_std"] > 0].copy()
 
     df["zflu"] = (df["value"] - df["state_mean"]) / df["state_std"]
 
-    # -----------------------------
-    # Save output
-    # -----------------------------
     df.to_csv(OUT_PATH, index=False)
 
     print(f"Wrote {OUT_PATH}")

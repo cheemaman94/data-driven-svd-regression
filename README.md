@@ -6,23 +6,6 @@ Dependencies:
 Install with:
 pip install epiweeks
 
-# Project structure
-
--data/
-Raw reference data (not modified).
-    -from_state_to_fip_and_pop.csv
-    -get_target_data.R
-
--analysis_data/
- Generated datasets and scripts.
-    -target-hospital-admissions.csv
-    -format_flu_data.py
-    -pop_norm_flu.py
-    -z_score_flu.py
-
--exploratory_analysis/
- Jupyter notebooks for validation plots and exploration
-
 # Data Cleaning and Missing Values
 
 The influenza hospitalization dataset
@@ -46,4 +29,4 @@ and scales by its historical standard deviation, enabling comparison of
 relative flu intensity across states with very different population sizes.
 
 # PCA
-We constructed a flu matrix with season weeks as rows and state-season pairs as columns, then applied PCA via SVD to both population-normalized and z-score–normalized datasets. We stored the resulting U, Σ, and V matrices in long-form CSVs for full reproducibility
+We constructed a flu matrix with season weeks as rows and state-season pairs as columns, then applied PCA via SVD to both population-normalized and z-score–normalized datasets. We stored the resulting U, Σ, and V matrices in long-form CSVs for full reproducibility.

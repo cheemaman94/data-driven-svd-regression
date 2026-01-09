@@ -175,10 +175,10 @@ def run_one(input_path: str, out_path: str, out_colmap_path: str, value_candidat
     svd_long.to_csv(out_path, index=False)
     colmap.to_csv(out_colmap_path, index=False)
 
-    print(f"✅ Wrote {out_path}  (rows={len(svd_long):,})")
-    print(f"✅ Wrote {out_colmap_path}  (columns kept={X.shape[1]:,})")
-    print(f"   Matrix shape used for PCA: weeks={X.shape[0]}, columns={X.shape[1]}")
-    print(f"   Value column used: {value_col}")
+    print(f"Wrote {out_path}  (rows={len(svd_long):,})")
+    print(f"Wrote {out_colmap_path}  (columns kept={X.shape[1]:,})")
+    print(f"Matrix shape used for PCA: weeks={X.shape[0]}, columns={X.shape[1]}")
+    print(f"Value column used: {value_col}")
 
 
 def main() -> None:
@@ -196,5 +196,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print(f"❌ ERROR: {e}", file=sys.stderr)
+        print(f"ERROR: {e}", file=sys.stderr)
         sys.exit(1)
